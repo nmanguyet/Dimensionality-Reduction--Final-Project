@@ -18,7 +18,7 @@ def split_train_test(X, y):
 
 
 def umap_reduce_dim(X_train, y_train, X_test):
-    manifold = umap.UMAP(n_neighbors=15,
+    manifold = umap.UMAP(n_neighbors=30,
                         min_dist=0.1,
                         n_components=2,
                         metric='cosine',
