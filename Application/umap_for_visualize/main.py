@@ -7,8 +7,8 @@ from tfidf import tf_idf_embedding
 from get_embed_from_glove import get_index_embedding, get_embedding_matrix
 from lstm import lstm_embedding
 from sklearn.model_selection import train_test_split # Split train - test
-import umap
-import matplotlib.pyplot as plt
+import umap # Umap algorithm
+import matplotlib.pyplot as plt # Plot
 
 ##
 def split_train_test(X, y):
@@ -41,6 +41,7 @@ def plot_scatter(X_train, y_train, X_test, y_test, algorithm):
 
 
 ##
+# Initial
 text_column = 'text'
 clean_text_column = 'clean_text_stem'
 target_column = 'source'
@@ -48,6 +49,7 @@ n_class = 20
 
 
 ##
+# Load data and split train - test
 df, dataset = load_data()
 df_clean = clean_df(df, text_column, clean_text_column)
 X_train, X_test, y_train, y_test = split_train_test(df_clean[text_column], df_clean[target_column]) # Split train test

@@ -3,12 +3,12 @@ import numpy as np
 
 
 def text_to_index(tokenized_texts, vocab, unknown_word):
-    X = []
+    X = [] # Contain index of all text
     word_to_index = {word: index+2 for index, word in enumerate(vocab)}
 
-    for text in tokenized_texts:
-        cur_text_indices = []
-        for word in text:
+    for text in tokenized_texts: # For each text
+        cur_text_indices = [] # Contain index of a text
+        for word in text: # For each word
             if word in word_to_index:
                 cur_text_indices.append(word_to_index[word])
             else:
