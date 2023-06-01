@@ -14,5 +14,5 @@ def load_word_embeddings(fname):
 
 def get_embedding_glove():
     vocab, matrix = load_word_embeddings("glove.6B.100d.txt") # Get embedding matrix with glove have 100 dim
-    embedding_matrix = np.pad(matrix, ((2,0),(0,0)), mode='constant', constant_values =0.0)  # Padding to equal length
+    embedding_matrix = np.pad(matrix, ((2,0),(0,0)), mode='constant', constant_values=0.0)  # Padding to equal length
     return vocab, embedding_matrix
