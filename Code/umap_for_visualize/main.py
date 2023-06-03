@@ -7,6 +7,9 @@ from tfidf import tf_idf_embedding
 from get_embed_from_glove import get_index_embedding, get_embedding_matrix
 from lstm import lstm_embedding
 from sklearn.model_selection import train_test_split # Split train - test
+from sklearn.metrics import silhouette_score
+from umap import validation # Trustworthiness_umap
+from warnings import filterwarnings # Delete warning
 import umap # Umap algorithm
 import matplotlib.pyplot as plt # Plot
 
@@ -95,3 +98,45 @@ X_reduced_train_lstm, X_reduced_test_lstm = umap_reduce_dim(text_embedding_train
                                                             target_matrix_train,
                                                             text_embedding_test_lstm)
 plot_scatter(X_reduced_train_lstm, target_matrix_train, X_reduced_test_lstm, target_matrix_test, 'lstm')
+
+
+##
+# Evaluation
+score_BOW = silhouette_score(X_reduced_test_BOW, y_test)
+print("Silhouette score of bag of word is ", score_BOW)
+score_tdidf = silhouette_score(X_reduced_test_tfidf, y_test)
+print("Silhouette score of tf-idf is ", score_tdidf)
+score_glove = silhouette_score(X_reduced_test_glove, y_test)
+print("Silhouette score of pre-train model glove is ", score_glove)
+score_lstm = silhouette_score(X_reduced_test_lstm, y_test)
+print("Silhouette score of tf-idf is ", score_lstm)
+
+##
+K = 30
+filterwarnings('ignore')
+
+trustworthiness_bow = validation.trustworthiness_vector(source=X_train_BOW.toarray()
+                                  ,embedding=X_reduced_train_BOW
+                                  ,max_k=K)
+trustworthiness_tfidf = validation.trustworthiness_vector(source=X_train_BOW.toarray()
+                                  ,embedding=X_reduced_train_tfidf
+                                  ,max_k=K)
+trustworthiness_glove = validation.trustworthiness_vector(source=text_embedding_train
+                                  ,embedding=X_reduced_train_glove
+                                  ,max_k=K)
+
+trustworthiness_lstm = validation.trustworthiness_vector(source=np.array(embedding_matrix_lstm_train)
+                                  ,embedding=X_reduced_train_lstm
+                                  ,max_k=K)
+
+filterwarnings('default')
+
+
+plt.plot(trustworthiness_bow)
+plt.plot(trustworthiness_tfidf)
+plt.plot(trustworthiness_glove)
+plt.plot(trustworthiness_lstm)
+plt.ylabel("Trustworthiness score")
+plt.xlabel("Value of K")
+plt.title(f"Trustworthiness at {K}")
+plt.legend(["bow", "tfdif", "glove", "lstm"], loc="upper right")
